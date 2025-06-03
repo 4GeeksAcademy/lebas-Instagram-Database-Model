@@ -48,6 +48,12 @@ class Follower(db.Model):
     user_from: Mapped["User"] = relationship("User", foreign_keys=[user_from_id], backref="followers_sent")
     user_to: Mapped["User"] = relationship("User", foreign_keys=[user_to_id], backref="followers_received")
 
+class MediaType(Enum):
+    IMAGE = "image"
+    VIDEO = "video"
+    AUDIO = "audio"
+    OTHER = "other"
+
 class Media(db.Model):
     __tablename__ = 'Media'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -56,12 +62,6 @@ class Media(db.Model):
     post_id: Mapped[int] = mapped_column(ForeignKey('POST.id'), nullable=False)
 
     post: Mapped["Post"] = relationship("Post", back_populates="media")
-
-class MediaType(Enum):
-    IMAGE = "image"
-    VIDEO = "video"
-    AUDIO = "audio"
-    OTHER = "other"
 
 class Comment(db.Model):
     __tablename__ = 'comment'
