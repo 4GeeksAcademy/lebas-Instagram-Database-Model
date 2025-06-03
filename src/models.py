@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Boolean, Integer, Text, ForeignKey
+from sqlalchemy import String, Boolean, Integer, Text, ForeignKey, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -30,6 +31,8 @@ class Post(db.Model):
     __tablename__ = 'POST'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey('User.id'), nullable=False)
+    post_text: Mapped[str] = mapped_column(String(2200), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
 
     author: Mapped["User"] = relationship("User", back_populates="posts")
     media: Mapped[list["Media"]] = relationship("Media", back_populates="post")
@@ -55,7 +58,7 @@ class Media(db.Model):
 class Comment(db.Model):
     __tablename__ = 'comment'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    comment_text: Mapped[str] = mapped_column(Text, nullable=False)
+    comment_text: Mapped[str] = mapped_column(String(1000))
     author_id: Mapped[int] = mapped_column(ForeignKey('User.id'), nullable=False)
     post_id: Mapped[int] = mapped_column(ForeignKey('POST.id'), nullable=False)
 
