@@ -32,7 +32,7 @@ class Post(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey('User.id'), nullable=False)
     post_text: Mapped[str] = mapped_column(String(2200), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(), nullable=False)
 
     author: Mapped["User"] = relationship("User", back_populates="posts")
     media: Mapped[list["Media"]] = relationship("Media", back_populates="post")
@@ -61,6 +61,7 @@ class Comment(db.Model):
     comment_text: Mapped[str] = mapped_column(String(1000))
     author_id: Mapped[int] = mapped_column(ForeignKey('User.id'), nullable=False)
     post_id: Mapped[int] = mapped_column(ForeignKey('POST.id'), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(), nullable=False)
 
     author: Mapped["User"] = relationship("User", back_populates="comments")
     post: Mapped["Post"] = relationship("Post", back_populates="comments")
