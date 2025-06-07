@@ -57,7 +57,7 @@ class MediaType(Enum):
 class Media(db.Model):
     __tablename__ = 'Media'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    media_type: Mapped[MediaType] = mapped_column(SqlEnum(MediaType), nullable=False)
+    media_type: Mapped[str] = mapped_column(SqlEnum(MediaType), nullable=False)
     url: Mapped[str] = mapped_column(Text, nullable=False)
     post_id: Mapped[int] = mapped_column(ForeignKey('POST.id'), nullable=False)
 
