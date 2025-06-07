@@ -2,6 +2,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, Boolean, Integer, Text, ForeignKey, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
+from sqlalchemy import Enum as SqlEnum
+from enum import Enum
 
 db = SQLAlchemy()
 
@@ -46,10 +48,16 @@ class Follower(db.Model):
     user_from: Mapped["User"] = relationship("User", foreign_keys=[user_from_id], backref="followers_sent")
     user_to: Mapped["User"] = relationship("User", foreign_keys=[user_to_id], backref="followers_received")
 
+class MediaType(Enum):
+    IMAGE = "image"
+    VIDEO = "video"
+    AUDIO = "audio"
+    OTHER = "other"
+
 class Media(db.Model):
     __tablename__ = 'Media'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    media_type: Mapped[str] = mapped_column(String, nullable=False)
+    media_type: Mapped[MediaType] = mapped_column(SqlEnum(MediaType), nullable=False)
     url: Mapped[str] = mapped_column(Text, nullable=False)
     post_id: Mapped[int] = mapped_column(ForeignKey('POST.id'), nullable=False)
 
